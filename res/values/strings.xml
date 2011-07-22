@@ -7,4 +7,7 @@
     
     <string name="find_nearby_bikes_action">Find Nearby Bikes</string>
     <string name="dropoff_bike_action">DropOff My Bike</string>
+    
+    <string name="pickup_bike_url">http://117.120.6.188:8080/services/pickup</string>
+    <string name="dropoff_bike_url">http://117.120.6.188:8080/services/dropoff</string>
 </resources>

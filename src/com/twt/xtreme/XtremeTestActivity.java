@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -39,6 +40,8 @@ public class XtremeTestActivity extends Activity {
 	LocationManager locationManager;
 	LocationListener locationListener;
 	
+	String android_id;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,8 +49,9 @@ public class XtremeTestActivity extends Activity {
 		bAction = (Button) findViewById(R.id.btn_action);
 		bLocationAction = (Button) findViewById(R.id.btn_location_action);
 		tStatus = (TextView) findViewById(R.id.text_status);
-		
-		
+		android_id = android.provider.Settings.Secure.getString(getContentResolver(), 
+				android.provider.Settings.Secure.ANDROID_ID);
+		Log.d(T, "Android ID: "+android_id);
 		// Acquire a reference to the system Location Manager
 		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
@@ -64,8 +68,6 @@ public class XtremeTestActivity extends Activity {
 
 		    public void onProviderDisabled(String provider) {}
 		  };
-
-		
 	}
 
 	
@@ -112,6 +114,10 @@ public class XtremeTestActivity extends Activity {
 		} catch (Exception e) {
 			Log.e(T, "exception in geocoding", e);
 		}
+		
+	}
+	
+	public void doPickupBikeAction(View v) {
 		
 	}
 
