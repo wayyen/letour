@@ -40,19 +40,22 @@ public class Util {
 	}
 	
 	public static void setRentalRecordToSharedPref(Context ctx, RentalRecord rec) {
-		putSharedPrefStr(ctx, "rental_slot_id", rec.slot_id);
+		putSharedPrefStr(ctx, "rental_pickup_slot_id", rec.pickup_slot_id);
+		putSharedPrefStr(ctx, "rental_dropoff_slot_id", rec.dropoff_slot_id);
 		putSharedPrefStr(ctx, "rental_device_id", rec.device_id);
 	}
 	
 	public static RentalRecord getRentalRecordFromSharedPref(Context ctx) {
 		RentalRecord rec = new RentalRecord();
 		rec.setDeviceId(getSharedPrefStr(ctx, "rental_device_id"));
-		rec.setSlotId(getSharedPrefStr(ctx, "rental_slot_id"));
+		rec.setPickup_slot_id(getSharedPrefStr(ctx, "rental_pickup_slot_id"));
+		rec.setDropoff_slot_id(getSharedPrefStr(ctx, "rental_dropoff_slot_id"));
 		return rec;
 	}
 	
 	public static void clearRentalRecordFromSharedPref(Context ctx) {
-		clearSharedPrefStr(ctx, "rental_slot_id");
+		clearSharedPrefStr(ctx, "rental_pickup_slot_id");
+		clearSharedPrefStr(ctx, "rental_dropoff_slot_id");
 		clearSharedPrefStr(ctx, "rental_device_id");
 	}
 

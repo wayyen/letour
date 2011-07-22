@@ -13,8 +13,13 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -72,9 +77,9 @@ public class XtremeTestActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onStart();
 		// Register the listener with the Location Manager to receive location updates	
-		//locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 		Criteria c = new Criteria();
-		locationManager.requestSingleUpdate(c, locationListener, null);
+		// locationManager.requestSingleUpdate(c, locationListener, null);
 	}
 
 
@@ -116,20 +121,29 @@ public class XtremeTestActivity extends Activity {
 	public void doPickupBikeAction(View v) {
 		RentalRecord rec = new RentalRecord();
 		rec.setDeviceId(android_id);
-		rec.setSlotId("1234"); // rec.setSlotId(slot_id); TODO: use NFC to get the slot id
+		rec.setPickup_slot_id("1"); // rec.setSlotId(slot_id); TODO: use NFC to get the slot id
 		int result = HttpUtil.pickupBike(getApplicationContext(), rec);
 		if (result == HttpResult.STATUS_OK) {
 			Util.setRentalRecordToSharedPref(getApplicationContext(), rec);
+			tStatus.setText("Bike picked up successfully.");
 			Log.d(T, "Bike picked up successfuly");
+		} else {
+			tStatus.setText("No bike available at slot:"+rec.getPickup_slot_id());
+			Log.d(T, "No bike available at slot:"+rec.getPickup_slot_id());
 		}
 	}
 	
 	public void doDropOffBikeAction(View v) {
 		RentalRecord rec = Util.getRentalRecordFromSharedPref(getApplicationContext());
+		rec.setDropoff_slot_id("2");
 		int result = HttpUtil.dropOffBike(getApplicationContext(), rec);
 		if (result == HttpResult.STATUS_OK) {
 			Util.clearRentalRecordFromSharedPref(getApplicationContext());
+			tStatus.setText("Bike dropped off successfully.");
 			Log.d(T, "Bike dropped off successfully");
+		} else {
+			tStatus.setText("Slot "+rec.getDropoff_slot_id()+" occupied.");
+			Log.d(T, "Slot "+rec.getDropoff_slot_id()+" occupied.");
 		}
 	}
 
@@ -152,6 +166,42 @@ public class XtremeTestActivity extends Activity {
 		}
 	}
 
+	@Override
+	protected void onNewIntent(Intent intent) {
+		// TODO Auto-generated method stub
+		super.onNewIntent(intent);
+		NdefMessage[] nmsgs = getNdefMessages(intent);
+		for (NdefMessage nmsg : nmsgs) {
+			Log.d(T,"Got tag content: "+nmsg.toString());
+		}
+	}
 	
+	NdefMessage[] getNdefMessages(Intent intent) {
+	    // Parse the intent
+	    NdefMessage[] msgs = null;
+	    Log.d(T, "NDEF discovered!");
+	    String action = intent.getAction();
+	    if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
+	        Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+	        if (rawMsgs != null) {
+	            msgs = new NdefMessage[rawMsgs.length];
+	            for (int i = 0; i < rawMsgs.length; i++) {
+	                msgs[i] = (NdefMessage) rawMsgs[i];
+	            }
+	        }
+	        else {
+	        // Unknown tag type
+	            byte[] empty = new byte[] {};
+	            NdefRecord record = new NdefRecord(NdefRecord.TNF_UNKNOWN, empty, empty, empty);
+	            NdefMessage msg = new NdefMessage(new NdefRecord[] {record});
+	            msgs = new NdefMessage[] {msg};
+	        }
+	    }        
+	    else {
+	        Log.e(T, "Unknown intent " + intent);
+	        finish();
+	    }
+	    return msgs;
+	}
 	
 }

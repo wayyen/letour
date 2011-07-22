@@ -1,8 +1,8 @@
 package com.twt.xtreme;
 
 public class HttpResult {
-	final static int STATUS_OK = 0;
-	final static int STATUS_FAIL = 100;
+	final static int STATUS_OK = 1;
+	final static int STATUS_FAIL = 0;
 	
 	int success;
 
