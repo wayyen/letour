@@ -124,7 +124,7 @@ public class XtremeTestActivity extends Activity {
 		}
 	}
 	
-	public void doDropoffBikeAction(View v) {
+	public void doDropOffBikeAction(View v) {
 		RentalRecord rec = Util.getRentalRecordFromSharedPref(getApplicationContext());
 		int result = HttpUtil.dropOffBike(getApplicationContext(), rec);
 		if (result == HttpResult.STATUS_OK) {
