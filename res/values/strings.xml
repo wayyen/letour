@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="status">Hello World, XtremeTestActivity!</string>
+    <string name="app_name">XtremeTest</string>
+    <string name="action">Camera!</string>
+    <string name="location_action">Location!</string>
+    
+    <string name="find_nearby_bikes_action">Find Nearby Bikes</string>
+    <string name="dropoff_bike_action">DropOff My Bike</string>
+</resources>

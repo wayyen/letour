@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <TextView android:id="@+id/text_status"  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="@string/status"
+    />
+    
+    <Button android:id="@+id/btn_action" 
+    android:text="@string/action" 
+    android:layout_height="wrap_content" 
+    android:layout_width="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:onClick="doAction" />
+    
+    <Button android:id="@+id/btn_location_action" 
+    android:text="@string/location_action" 
+    android:layout_height="wrap_content" 
+    android:layout_width="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:onClick="doLocationAction" />
+    
+    <Button android:id="@+id/btn_find_nearby_bikes" 
+    android:text="@string/find_nearby_bikes_action" 
+    android:layout_height="wrap_content" 
+    android:layout_width="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:onClick="findNearbyBikes" />
+    
+    <Button android:id="@+id/btn_dropoff_bike" 
+    android:text="@string/dropoff_bike_action" 
+    android:layout_height="wrap_content" 
+    android:layout_width="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:onClick="dropOffBike" />
+
+    
+</LinearLayout>
