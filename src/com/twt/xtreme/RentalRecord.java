@@ -1,19 +1,19 @@
 package com.twt.xtreme;
 
 public class RentalRecord {
-	String username;
+	String device_id;
 	String slot_id;
 	
-	public String getUsername() {
-		return username;
+	public String getDeviceId() {
+		return device_id;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setDeviceId(String device_id) {
+		this.device_id = device_id;
 	}
-	public String getSlot_id() {
+	public String getSlotId() {
 		return slot_id;
 	}
-	public void setSlot_id(String slot_id) {
+	public void setSlotId(String slot_id) {
 		this.slot_id = slot_id;
 	}
 

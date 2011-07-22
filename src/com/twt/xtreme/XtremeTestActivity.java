@@ -1,31 +1,23 @@
 package com.twt.xtreme;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.Camera;
-import android.hardware.Camera.Size;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -57,16 +49,20 @@ public class XtremeTestActivity extends Activity {
 
 		// Define a listener that responds to location updates
 		locationListener = new LocationListener() {
-		    public void onLocationChanged(Location location) {
+		    @Override
+			public void onLocationChanged(Location location) {
 		      // Called when a new location is found by the network location provider.
 		      Log.d(T, "location update: " + location.toString());
 		    }
 
-		    public void onStatusChanged(String provider, int status, Bundle extras) {}
+		    @Override
+			public void onStatusChanged(String provider, int status, Bundle extras) {}
 
-		    public void onProviderEnabled(String provider) {}
+		    @Override
+			public void onProviderEnabled(String provider) {}
 
-		    public void onProviderDisabled(String provider) {}
+		    @Override
+			public void onProviderDisabled(String provider) {}
 		  };
 	}
 
@@ -118,7 +114,23 @@ public class XtremeTestActivity extends Activity {
 	}
 	
 	public void doPickupBikeAction(View v) {
-		
+		RentalRecord rec = new RentalRecord();
+		rec.setDeviceId(android_id);
+		rec.setSlotId("1234"); // rec.setSlotId(slot_id); TODO: use NFC to get the slot id
+		int result = HttpUtil.pickupBike(getApplicationContext(), rec);
+		if (result == HttpResult.STATUS_OK) {
+			Util.setRentalRecordToSharedPref(getApplicationContext(), rec);
+			Log.d(T, "Bike picked up successfuly");
+		}
+	}
+	
+	public void doDropoffBikeAction(View v) {
+		RentalRecord rec = Util.getRentalRecordFromSharedPref(getApplicationContext());
+		int result = HttpUtil.dropOffBike(getApplicationContext(), rec);
+		if (result == HttpResult.STATUS_OK) {
+			Util.clearRentalRecordFromSharedPref(getApplicationContext());
+			Log.d(T, "Bike dropped off successfully");
+		}
 	}
 
 	@Override
@@ -140,5 +152,6 @@ public class XtremeTestActivity extends Activity {
 		}
 	}
 
+	
 	
 }

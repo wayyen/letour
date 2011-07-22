@@ -33,6 +33,7 @@ public class HttpUtil {
 	
 	public static int pickupBike(Context ctx, RentalRecord rec ) {
 		int resp_code = -1;
+		HttpResult result = null;
 		try {
 			
 			DefaultHttpClient c = new DefaultHttpClient(getTimeoutParams());
@@ -46,16 +47,18 @@ public class HttpUtil {
 			HttpResponse resp = c.execute(req);
 			String result_json = convertStreamToString(resp.getEntity().getContent());
 			resp_code = resp.getStatusLine().getStatusCode();
-			HttpResult result = gson.fromJson(result_json, HttpResult.class);
+			result = gson.fromJson(result_json, HttpResult.class);
 			Log.d(TAG, "HTTP Post Result: "+resp_code+" Entity Result: " + result);
 		} catch ( Exception e ) {
 			Log.e(TAG, "Exception when posting data to HTTP", e);
 		}
-		return resp_code;
+		return (result != null ? result.getSuccess() : -1);
+		
 	}
 
 	public static int dropOffBike(Context ctx, RentalRecord rec ) {
 		int resp_code = -1;
+		HttpResult result = null;
 		try {
 			
 			DefaultHttpClient c = new DefaultHttpClient(getTimeoutParams());
@@ -69,12 +72,12 @@ public class HttpUtil {
 			HttpResponse resp = c.execute(req);
 			String result_json = convertStreamToString(resp.getEntity().getContent());
 			resp_code = resp.getStatusLine().getStatusCode();
-			HttpResult result = gson.fromJson(result_json, HttpResult.class);
+			result = gson.fromJson(result_json, HttpResult.class);
 			Log.d(TAG, "HTTP Post Result: "+resp_code+" Entity Result: " + result);
 		} catch ( Exception e ) {
 			Log.e(TAG, "Exception when posting data to HTTP", e);
 		}
-		return resp_code;
+		return (result != null ? result.getSuccess() : -1);
 	}
 	
 	public static HttpParams getTimeoutParams() {
