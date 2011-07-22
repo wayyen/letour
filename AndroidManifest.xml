@@ -12,12 +12,15 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        
+        <activity android:name=".RentBikeActivity"
+                  android:label="@string/rentbike_activity">
             <intent-filter>
               <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
               <data android:mimeType="application/twt" />
               <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
-
         </activity>
 
     </application>

@@ -48,7 +48,6 @@ public class XtremeTestActivity extends Activity {
 		tStatus = (TextView) findViewById(R.id.text_status);
 		android_id = android.provider.Settings.Secure.getString(getContentResolver(), 
 				android.provider.Settings.Secure.ANDROID_ID);
-		Log.d(T, "Android ID: "+android_id);
 		// Acquire a reference to the system Location Manager
 		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
@@ -118,34 +117,7 @@ public class XtremeTestActivity extends Activity {
 		
 	}
 	
-	public void doPickupBikeAction(View v) {
-		RentalRecord rec = new RentalRecord();
-		rec.setDeviceId(android_id);
-		rec.setPickup_slot_id("1"); // rec.setSlotId(slot_id); TODO: use NFC to get the slot id
-		int result = HttpUtil.pickupBike(getApplicationContext(), rec);
-		if (result == HttpResult.STATUS_OK) {
-			Util.setRentalRecordToSharedPref(getApplicationContext(), rec);
-			tStatus.setText("Bike picked up successfully.");
-			Log.d(T, "Bike picked up successfuly");
-		} else {
-			tStatus.setText("No bike available at slot:"+rec.getPickup_slot_id());
-			Log.d(T, "No bike available at slot:"+rec.getPickup_slot_id());
-		}
-	}
-	
-	public void doDropOffBikeAction(View v) {
-		RentalRecord rec = Util.getRentalRecordFromSharedPref(getApplicationContext());
-		rec.setDropoff_slot_id("2");
-		int result = HttpUtil.dropOffBike(getApplicationContext(), rec);
-		if (result == HttpResult.STATUS_OK) {
-			Util.clearRentalRecordFromSharedPref(getApplicationContext());
-			tStatus.setText("Bike dropped off successfully.");
-			Log.d(T, "Bike dropped off successfully");
-		} else {
-			tStatus.setText("Slot "+rec.getDropoff_slot_id()+" occupied.");
-			Log.d(T, "Slot "+rec.getDropoff_slot_id()+" occupied.");
-		}
-	}
+
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -166,42 +138,6 @@ public class XtremeTestActivity extends Activity {
 		}
 	}
 
-	@Override
-	protected void onNewIntent(Intent intent) {
-		// TODO Auto-generated method stub
-		super.onNewIntent(intent);
-		NdefMessage[] nmsgs = getNdefMessages(intent);
-		for (NdefMessage nmsg : nmsgs) {
-			Log.d(T,"Got tag content: "+nmsg.toString());
-		}
-	}
-	
-	NdefMessage[] getNdefMessages(Intent intent) {
-	    // Parse the intent
-	    NdefMessage[] msgs = null;
-	    Log.d(T, "NDEF discovered!");
-	    String action = intent.getAction();
-	    if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
-	        Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-	        if (rawMsgs != null) {
-	            msgs = new NdefMessage[rawMsgs.length];
-	            for (int i = 0; i < rawMsgs.length; i++) {
-	                msgs[i] = (NdefMessage) rawMsgs[i];
-	            }
-	        }
-	        else {
-	        // Unknown tag type
-	            byte[] empty = new byte[] {};
-	            NdefRecord record = new NdefRecord(NdefRecord.TNF_UNKNOWN, empty, empty, empty);
-	            NdefMessage msg = new NdefMessage(new NdefRecord[] {record});
-	            msgs = new NdefMessage[] {msg};
-	        }
-	    }        
-	    else {
-	        Log.e(T, "Unknown intent " + intent);
-	        finish();
-	    }
-	    return msgs;
-	}
-	
+
+
 }
