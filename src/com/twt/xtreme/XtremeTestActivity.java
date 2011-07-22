@@ -9,7 +9,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -100,6 +102,15 @@ public class XtremeTestActivity extends Activity {
 				loc.getLatitude(), loc.getLongitude(), loc.getAccuracy()));
 		} else {
 			Log.e(T, "Can't get any location");
+		}
+		Geocoder g = new Geocoder(this);
+		try {
+		List<Address> addrlist = g.getFromLocation(loc.getLatitude(), loc.getLongitude(), 5);
+		for(Address addr : addrlist) {
+			Log.d(T, "addr: "+addr.toString());
+		}
+		} catch (Exception e) {
+			Log.e(T, "exception in geocoding", e);
 		}
 		
 	}
