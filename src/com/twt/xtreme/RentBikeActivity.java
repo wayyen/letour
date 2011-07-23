@@ -11,7 +11,9 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RentBikeActivity extends Activity {
 
@@ -20,6 +22,8 @@ public class RentBikeActivity extends Activity {
 	String android_id;
 	String slot_id_json;
 	TagData tag;
+	Button bPickupBike;
+	Button bDropoffBike;
 	private static Intent TrackingSvcIntent;
 	
 	@Override
@@ -28,6 +32,8 @@ public class RentBikeActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.rentbike);
 		tStatus = (TextView)findViewById(R.id.slot_status);
+		bPickupBike = (Button) findViewById(R.id.btn_pickup_action);
+		bDropoffBike = (Button) findViewById(R.id.btn_dropoff_action);
 		android_id = android.provider.Settings.Secure.getString(getContentResolver(), 
 				android.provider.Settings.Secure.ANDROID_ID);
 		TrackingSvcIntent = new Intent(this, TrackingService.class);
@@ -43,6 +49,7 @@ public class RentBikeActivity extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		refreshView();
 	}
 
 	@Override
@@ -72,14 +79,17 @@ public class RentBikeActivity extends Activity {
 		int result = HttpUtil.pickupBike(getApplicationContext(), rec);
 		if (result == HttpResult.STATUS_OK) {
 			Util.setRentalRecordToSharedPref(getApplicationContext(), rec);
-			tStatus.setText("Bike picked up successfully.");
+			// tStatus.setText("Bike picked up successfully.");
 			// start location tracking service
 			startService(TrackingSvcIntent);
 			Log.d(T, "Bike picked up successfuly");
+			Intent mainIntent = new Intent(this, LeTourActivity.class);
+			startActivity(mainIntent);
 		} else {
 			tStatus.setText("No bike available at slot:"+rec.getPickup_slot_id());
 			Log.d(T, "No bike available at slot:"+rec.getPickup_slot_id());
 		}
+		refreshView();
 	}
 	
 	public void doDropoffBikeAction(View v) {
@@ -89,10 +99,13 @@ public class RentBikeActivity extends Activity {
 			int result = HttpUtil.dropOffBike(getApplicationContext(), rec);
 			if (result == HttpResult.STATUS_OK) {
 				Util.clearRentalRecordFromSharedPref(getApplicationContext());
-				tStatus.setText("Bike dropped off successfully.");
+				// tStatus.setText("Bike dropped off successfully.");
 				// stop location tracking service
+				// Toast.makeText(getApplicationContext(), text, duration)
 				stopService(TrackingSvcIntent);
 				Log.d(T, "Bike dropped off successfully");
+				Intent mainIntent = new Intent(this, LeTourActivity.class);
+				startActivity(mainIntent);
 			} else {
 				tStatus.setText("Slot " + rec.getDropoff_slot_id()
 						+ " occupied.");
@@ -102,6 +115,7 @@ public class RentBikeActivity extends Activity {
 			tStatus.setText("You do not have bike to drop off");
 			Log.d(T, "No bike to drop off");
 		}
+		refreshView();
 	}
 	
 	
@@ -133,5 +147,14 @@ public class RentBikeActivity extends Activity {
 	    return msgs;
 	}
 	
+	private void refreshView() {
+		if (Util.isRented(getApplicationContext())) {
+			bDropoffBike.setVisibility(View.VISIBLE);
+			bPickupBike.setVisibility(View.GONE);
+		} else {
+			bDropoffBike.setVisibility(View.GONE);
+			bPickupBike.setVisibility(View.VISIBLE);
+		}
+	}
 		
 }

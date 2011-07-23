@@ -57,6 +57,13 @@ public class Util {
 		return rec;
 	}
 	
+	public static boolean isRented(Context ctx) {
+		if (getRentalRecordFromSharedPref(ctx) == null) {
+			return false;
+		}
+		return true;
+	}
+	
 	public static void clearRentalRecordFromSharedPref(Context ctx) {
 		clearSharedPrefStr(ctx, "rental_pickup_slot_id");
 		clearSharedPrefStr(ctx, "rental_dropoff_slot_id");

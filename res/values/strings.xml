@@ -4,12 +4,14 @@
     
     <string name="app_name">LeTour</string>
     <string name="rentbike_activity">RentABike</string>
-    <string name="action">Camera</string>
-    <string name="location_action">Location</string>
+    <string name="camera_action">Take Picture</string>
+    <string name="using_message">You are currently renting bike taken from </string>
+    <string name="free_message">You are currently not renting.</string>
     
-    <string name="find_nearby_bikes_action">Find Nearby Bikes</string>
+    <string name="find_nearby_bikes_action">Nearby Bikestops</string>
     <string name="pickup_bike_action">Pickup My Bike</string>
     <string name="dropoff_bike_action">DropOff My Bike</string>
+    <string name="track_map_action">Track My Route</string>
     
     <string name="pickup_bike_url">http://117.120.6.188:8080/services/pickup</string>
     <string name="dropoff_bike_url">http://117.120.6.188:8080/services/dropoff</string>

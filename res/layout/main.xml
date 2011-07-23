@@ -1,28 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    >
+    android:id="@+id/letour_main" >
+    
+    <ImageView android:id="@+id/main_img_logo" 
+    android:src="@drawable/bike_logo" 
+    style="@style/MainLogo"
+    android:layout_height="wrap_content" 
+    android:layout_width="wrap_content"
+    android:layout_centerHorizontal="true" />
+    
     <TextView android:id="@+id/text_status"  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
     android:text="@string/status"
+    android:layout_below="@id/main_img_logo"
+    android:layout_centerHorizontal="true"
     />
     
-    <Button android:id="@+id/btn_action" 
-    android:text="@string/action" 
+    <Button android:id="@+id/btn_camera_action" 
+    android:text="@string/camera_action" 
     android:layout_height="wrap_content" 
     android:layout_width="wrap_content"
+    android:layout_below="@id/text_status"
     android:layout_centerHorizontal="true"
-    android:onClick="doAction" />
+    android:onClick="doCameraAction" />
     
     <Button android:id="@+id/btn_find_nearby_bikes" 
     android:text="@string/find_nearby_bikes_action" 
     android:layout_height="wrap_content" 
     android:layout_width="wrap_content"
+    android:layout_below="@id/btn_camera_action"
     android:layout_centerHorizontal="true"
-    android:onClick="doPickupBikeAction" />
-
+    android:onClick="doFindNearby" />
     
-</LinearLayout>
+    <Button android:id="@+id/btn_track_map" 
+    android:text="@string/track_map_action" 
+    android:layout_height="wrap_content" 
+    android:layout_width="wrap_content"
+    android:layout_below="@id/btn_find_nearby_bikes"
+    android:layout_centerHorizontal="true"
+    android:onClick="doTrackMapAction" />
+    
+</RelativeLayout>
