@@ -25,6 +25,14 @@
             </intent-filter>
         </activity>
         
+        <activity android:name=".PostPhotoActivity"
+                  android:theme="@android:style/Theme.Light"
+                  android:label="@string/postphoto_activity">
+        </activity>
+        <activity android:name=".TrackViewActivity"
+                  android:theme="@android:style/Theme.Light"
+                  android:label="@string/trackview_activity">
+        </activity>
         <service android:enabled="true" android:name=".TrackingService" />
 
     </application>

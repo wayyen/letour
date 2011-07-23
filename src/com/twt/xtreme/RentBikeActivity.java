@@ -77,8 +77,12 @@ public class RentBikeActivity extends Activity {
 		rec.setDeviceId(android_id);
 		rec.setPickup_slot_id(tag.slot_id);
 		int result = HttpUtil.pickupBike(getApplicationContext(), rec);
-		if (result == HttpResult.STATUS_OK) {
+		if (result >= HttpResult.STATUS_OK) {
 			Util.setRentalRecordToSharedPref(getApplicationContext(), rec);
+			Util.putSharedPrefStr(getApplicationContext(), "rental_id", ""+result);
+			Toast.makeText(getApplicationContext(), 
+					"Bike picked up successfully at "+tag.slot_outlet+":"+tag.slot_name,
+					Toast.LENGTH_SHORT).show();
 			// tStatus.setText("Bike picked up successfully.");
 			// start location tracking service
 			startService(TrackingSvcIntent);
@@ -97,11 +101,14 @@ public class RentBikeActivity extends Activity {
 		if (rec != null) {
 			rec.setDropoff_slot_id(tag.slot_id);
 			int result = HttpUtil.dropOffBike(getApplicationContext(), rec);
-			if (result == HttpResult.STATUS_OK) {
+			if (result >= HttpResult.STATUS_OK) {
 				Util.clearRentalRecordFromSharedPref(getApplicationContext());
+				Util.clearSharedPrefStr(getApplicationContext(), "rental_id");
 				// tStatus.setText("Bike dropped off successfully.");
 				// stop location tracking service
-				// Toast.makeText(getApplicationContext(), text, duration)
+				Toast.makeText(getApplicationContext(), 
+						"Bike returned successfully at "+tag.slot_outlet+":"+tag.slot_name,
+						Toast.LENGTH_SHORT).show();
 				stopService(TrackingSvcIntent);
 				Log.d(T, "Bike dropped off successfully");
 				Intent mainIntent = new Intent(this, LeTourActivity.class);

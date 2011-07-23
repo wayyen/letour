@@ -2,6 +2,7 @@ package com.twt.xtreme;
 
 import java.io.File;
 import java.util.List;
+import java.util.Random;
 
 import android.app.Activity;
 import android.content.Context;
@@ -36,6 +37,8 @@ public class LeTourActivity extends Activity {
 	Button bNearby;
 	Button bTrack;
 	TextView tStatus;
+	File photo_file;
+	Random rand;
 	LocationManager locationManager;
 	LocationListener locationListener;
 	
@@ -51,7 +54,6 @@ public class LeTourActivity extends Activity {
 		tStatus = (TextView) findViewById(R.id.text_status);
 		android_id = android.provider.Settings.Secure.getString(getContentResolver(), 
 				android.provider.Settings.Secure.ANDROID_ID);
-
 	}
 
 	
@@ -71,18 +73,24 @@ public class LeTourActivity extends Activity {
 	}
 
 
-	public void doAction(View v) {
-		File file = new File(Environment.getExternalStorageDirectory() +"/"+
-				"xtremetest.jpg");
-		Log.d(T, "pic file: " + file.getAbsolutePath());
-		Uri outputFileUri = Uri.fromFile(file);
+	public void doCameraAction(View v) {
+		Random rand = new Random();
+		
+		photo_file = new File(Environment.getExternalStorageDirectory() +"/"+
+				"xtreme-"+rand.nextInt(99999)+".jpg");
+		Log.d(T, "pic file: " + photo_file.getAbsolutePath());
+		Uri outputFileUri = Uri.fromFile(photo_file);
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
 		startActivityForResult(intent, TAKE_PICTURE);
 		
 	}
 
-
+	public void doTrackMapAction(View v) {
+		Intent trackIntent = new Intent (this, TrackViewActivity.class);
+		startActivity(trackIntent);
+	}
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
@@ -92,6 +100,9 @@ public class LeTourActivity extends Activity {
 			switch (resultCode) {
 			case Activity.RESULT_OK:
 				Log.d(T, "picture saved");
+				Intent postPhotoIntent = new Intent(getApplicationContext(), PostPhotoActivity.class);
+				postPhotoIntent.putExtra("photo_path", photo_file.getAbsolutePath());
+				startActivity(postPhotoIntent);
 				break;
 			case Activity.RESULT_CANCELED:
 				Log.d(T, "picture captured cancelled.");

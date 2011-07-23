@@ -94,31 +94,5 @@ public class TrackingService extends Service {
 		// Criteria c = new Criteria();
 		// locationManager.requestSingleUpdate(c, locationListener, null);
 	}
-	
-	/*
-	public void doLocationAction(View v) {
 
-		Location loc = ( locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) != null ?
-					locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) :
-						locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) );
-		if (loc != null) {
-			Log.d(T, loc.toString());
-			tStatus.setText(String.format("Lat: %f, Long: %f, Accuracy: %f",
-					loc.getLatitude(), loc.getLongitude(), loc.getAccuracy()));
-		} else {
-			Log.e(T, "Can't get any location");
-		}
-		Geocoder g = new Geocoder(this);
-		try {
-			List<Address> addrlist = g.getFromLocation(loc.getLatitude(),
-					loc.getLongitude(), 5);
-			for (Address addr : addrlist) {
-				Log.d(T, "addr: " + addr.toString());
-			}
-		} catch (Exception e) {
-			Log.e(T, "exception in geocoding", e);
-		}
-		
-	}
-	*/
 }

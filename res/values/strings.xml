@@ -1,19 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="status">Welcome to LeTour!</string>
+    <string name="status">Welcome to LeTour Bike Rental! Simply hold your mobile at the designated touch zone on the bike stand to rent a bike.</string>
     
-    <string name="app_name">LeTour</string>
-    <string name="rentbike_activity">RentABike</string>
+    <string name="app_name">LeTour Bike Rental App</string>
+    <string name="rentbike_activity">Tap-and-Rent-a-Bike</string>
+    <string name="postphoto_activity">Post Photo</string>
+    <string name="trackview_activity">My Routes</string>
     <string name="camera_action">Take Picture</string>
     <string name="using_message">You are currently renting bike taken from </string>
     <string name="free_message">You are currently not renting.</string>
     
+        
+    <string name="label_title">Photo title</string>
+    <string name="label_desc">Description</string>
+    
     <string name="find_nearby_bikes_action">Nearby Bikestops</string>
-    <string name="pickup_bike_action">Pickup My Bike</string>
-    <string name="dropoff_bike_action">DropOff My Bike</string>
+    <string name="pickup_bike_action">Pickup Bike</string>
+    <string name="dropoff_bike_action">Return Bike</string>
     <string name="track_map_action">Track My Route</string>
     
     <string name="pickup_bike_url">http://117.120.6.188:8080/services/pickup</string>
     <string name="dropoff_bike_url">http://117.120.6.188:8080/services/dropoff</string>
     <string name="tracking_url">http://117.120.6.188:8080/services/track</string>
+    <string name="tracking_view_url">http://117.120.6.188:8080/routes/</string>
+    <string name="couchdb_host">117.120.6.188</string>
+    <string name="couchdb_port">5984</string>
+    <string name="couchdb_db">codextreme</string>
+    <string name="menu_close">Close</string>
+    <string name="menu_list">View Route</string>
+    <string name="post_photo_action">Post Photo</string>
 </resources>
