@@ -49,7 +49,7 @@ public class HttpUtil {
 			String result_json = convertStreamToString(resp.getEntity().getContent());
 			resp_code = resp.getStatusLine().getStatusCode();
 			result = gson.fromJson(result_json, HttpResult.class);
-			Log.d(TAG, "HTTP Post Result: "+resp_code+" Entity Result: " + result);
+			Log.d(TAG, "HTTP Post Result: "+resp_code+" Entity Result: " + result.getSuccess());
 		} catch ( Exception e ) {
 			Log.e(TAG, "Exception when posting pickupBike HTTP", e);
 		}
@@ -74,7 +74,7 @@ public class HttpUtil {
 			String result_json = convertStreamToString(resp.getEntity().getContent());
 			resp_code = resp.getStatusLine().getStatusCode();
 			result = gson.fromJson(result_json, HttpResult.class);
-			Log.d(TAG, "HTTP Post Result: "+resp_code+" Entity Result: " + result);
+			Log.d(TAG, "HTTP Post Result: "+resp_code+" Entity Result: " + result.getSuccess());
 		} catch ( Exception e ) {
 			Log.e(TAG, "Exception posting dropOffBike HTTP", e);
 		}
@@ -98,7 +98,7 @@ public class HttpUtil {
 			String result_json = convertStreamToString(resp.getEntity().getContent());
 			resp_code = resp.getStatusLine().getStatusCode();
 			result = gson.fromJson(result_json, HttpResult.class);
-			Log.d(TAG, "HTTP Post Result: "+resp_code+" Entity Result: " + result);
+			Log.d(TAG, "HTTP Post Result: "+resp_code+" Entity Result: " + result.getSuccess());
 		} catch ( Exception e ) {
 			Log.e(TAG, "Exception when posting updateLocationTrack HTTP", e);
 		}

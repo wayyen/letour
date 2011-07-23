@@ -1,21 +1,9 @@
 package com.twt.xtreme;
 
-import java.util.List;
-
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import android.app.Activity;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.location.Address;
-import android.location.Criteria;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -32,8 +20,7 @@ public class RentBikeActivity extends Activity {
 	String android_id;
 	String slot_id_json;
 	TagData tag;
-	
-
+	private static Intent TrackingSvcIntent;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +30,7 @@ public class RentBikeActivity extends Activity {
 		tStatus = (TextView)findViewById(R.id.slot_status);
 		android_id = android.provider.Settings.Secure.getString(getContentResolver(), 
 				android.provider.Settings.Secure.ANDROID_ID);
+		TrackingSvcIntent = new Intent(this, TrackingService.class);
 	}
 
 	@Override
@@ -74,13 +62,6 @@ public class RentBikeActivity extends Activity {
 		Gson g = new Gson();
 		tag = g.fromJson(slot_id_json, TagData.class);
 		tStatus.setText("You have just tapped slot ID: "+tag.slot_id );
-		
-	}
-	
-	@Override
-	protected void onNewIntent(Intent intent) {
-		// TODO Auto-generated method stub
-		super.onNewIntent(intent);
 
 	}
 	
@@ -93,6 +74,7 @@ public class RentBikeActivity extends Activity {
 			Util.setRentalRecordToSharedPref(getApplicationContext(), rec);
 			tStatus.setText("Bike picked up successfully.");
 			// start location tracking service
+			startService(TrackingSvcIntent);
 			Log.d(T, "Bike picked up successfuly");
 		} else {
 			tStatus.setText("No bike available at slot:"+rec.getPickup_slot_id());
@@ -109,6 +91,7 @@ public class RentBikeActivity extends Activity {
 				Util.clearRentalRecordFromSharedPref(getApplicationContext());
 				tStatus.setText("Bike dropped off successfully.");
 				// stop location tracking service
+				stopService(TrackingSvcIntent);
 				Log.d(T, "Bike dropped off successfully");
 			} else {
 				tStatus.setText("Slot " + rec.getDropoff_slot_id()

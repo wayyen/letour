@@ -1,14 +1,10 @@
 package com.twt.xtreme;
 
-import java.util.List;
 import java.util.Random;
 
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -16,16 +12,12 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
-import android.view.View;
 
 public class TrackingService extends Service {
 
 	final static String T = "TrackingService";
 	
 	private boolean running = true;
-	private Context ctx;
-	// private DBProvider dbp;
-	private SharedPreferences pref;
 	private Random rand;
 	private PowerManager.WakeLock wl;
 	LocationManager locationManager;
@@ -48,6 +40,7 @@ public class TrackingService extends Service {
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
+		locationManager.removeUpdates(locationListener);
 		wl.release();
 	}
 	
@@ -58,6 +51,7 @@ public class TrackingService extends Service {
 		wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, T);
 		wl.setReferenceCounted(false);
 		wl.acquire();
+		setupLocationManager();
 		return START_STICKY;
 	}
 	
@@ -91,12 +85,12 @@ public class TrackingService extends Service {
 
 		    @Override
 			public void onProviderDisabled(String provider) {}
-		  };
-	}
-	
-	private void startLocationTracking() {
-		// Register the listener with the Location Manager to receive location updates	
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, locationListener);
+		};
+
+		// Register the listener with the Location Manager to receive location
+		// updates
+		locationManager.requestLocationUpdates(
+				LocationManager.NETWORK_PROVIDER, 10000, 0, locationListener);
 		// Criteria c = new Criteria();
 		// locationManager.requestSingleUpdate(c, locationListener, null);
 	}

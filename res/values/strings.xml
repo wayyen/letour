@@ -2,7 +2,7 @@
 <resources>
     <string name="status">Welcome to LeTour!</string>
     
-    <string name="app_name">LeTourt</string>
+    <string name="app_name">LeTour</string>
     <string name="rentbike_activity">RentABike</string>
     <string name="action">Camera</string>
     <string name="location_action">Location</string>
