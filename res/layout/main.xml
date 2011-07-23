@@ -40,7 +40,7 @@
     android:text="@string/track_map_action" 
     android:layout_height="wrap_content" 
     android:layout_width="wrap_content"
-    android:layout_below="@id/btn_find_nearby_bikes"
+    android:layout_below="@id/btn_camera_action"
     android:layout_centerHorizontal="true"
     android:onClick="doTrackMapAction" />
     

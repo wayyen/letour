@@ -19,6 +19,7 @@ public class RentBikeActivity extends Activity {
 
 	final static String T = "RentBikeActivity";
 	TextView tStatus;
+	TextView tQuery;
 	String android_id;
 	String slot_id_json;
 	TagData tag;
@@ -32,6 +33,7 @@ public class RentBikeActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.rentbike);
 		tStatus = (TextView)findViewById(R.id.slot_status);
+		tQuery = (TextView)findViewById(R.id.slot_query);
 		bPickupBike = (Button) findViewById(R.id.btn_pickup_action);
 		bDropoffBike = (Button) findViewById(R.id.btn_dropoff_action);
 		android_id = android.provider.Settings.Secure.getString(getContentResolver(), 
@@ -68,8 +70,16 @@ public class RentBikeActivity extends Activity {
 		}
 		Gson g = new Gson();
 		tag = g.fromJson(slot_id_json, TagData.class);
-		tStatus.setText("You have just tapped slot ID: "+tag.slot_id );
-
+		tStatus.setText("This is Bikestop:"+
+				"\n  Outlet: "+tag.slot_outlet+"" +
+				"\n  Lot Name: "+ tag.slot_name + 
+				"\n  Lot ID: "+tag.slot_id );
+		
+		if (Util.isRented(getApplicationContext())) {
+			tQuery.setText("Do you wish to return this bike?");
+		} else {
+			tQuery.setText("Do you with to rent this bike?");
+		}
 	}
 	
 	public void doPickupBikeAction(View v) {
