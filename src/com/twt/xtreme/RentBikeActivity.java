@@ -78,7 +78,7 @@ public class RentBikeActivity extends Activity {
 		if (Util.isRented(getApplicationContext())) {
 			tQuery.setText("Do you wish to return this bike?");
 		} else {
-			tQuery.setText("Do you with to rent this bike?");
+			tQuery.setText("Do you wish to rent this bike?");
 		}
 	}
 	
