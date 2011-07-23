@@ -48,26 +48,7 @@ public class XtremeTestActivity extends Activity {
 		tStatus = (TextView) findViewById(R.id.text_status);
 		android_id = android.provider.Settings.Secure.getString(getContentResolver(), 
 				android.provider.Settings.Secure.ANDROID_ID);
-		// Acquire a reference to the system Location Manager
-		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
-		// Define a listener that responds to location updates
-		locationListener = new LocationListener() {
-		    @Override
-			public void onLocationChanged(Location location) {
-		      // Called when a new location is found by the network location provider.
-		      Log.d(T, "location update: " + location.toString());
-		    }
-
-		    @Override
-			public void onStatusChanged(String provider, int status, Bundle extras) {}
-
-		    @Override
-			public void onProviderEnabled(String provider) {}
-
-		    @Override
-			public void onProviderDisabled(String provider) {}
-		  };
 	}
 
 	
@@ -75,10 +56,7 @@ public class XtremeTestActivity extends Activity {
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
-		// Register the listener with the Location Manager to receive location updates	
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-		Criteria c = new Criteria();
-		// locationManager.requestSingleUpdate(c, locationListener, null);
+
 	}
 
 
@@ -92,31 +70,6 @@ public class XtremeTestActivity extends Activity {
 		startActivityForResult(intent, TAKE_PICTURE);
 		
 	}
-	
-	public void doLocationAction(View v) {
-
-	Location loc = ( locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) != null ?
-				locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) :
-					locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) );
-		if (loc != null) {
-			Log.d(T, loc.toString());
-			tStatus.setText(String.format("Lat: %f, Long: %f, Accuracy: %f",
-				loc.getLatitude(), loc.getLongitude(), loc.getAccuracy()));
-		} else {
-			Log.e(T, "Can't get any location");
-		}
-		Geocoder g = new Geocoder(this);
-		try {
-		List<Address> addrlist = g.getFromLocation(loc.getLatitude(), loc.getLongitude(), 5);
-		for(Address addr : addrlist) {
-			Log.d(T, "addr: "+addr.toString());
-		}
-		} catch (Exception e) {
-			Log.e(T, "exception in geocoding", e);
-		}
-		
-	}
-	
 
 
 	@Override

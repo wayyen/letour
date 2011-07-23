@@ -22,7 +22,7 @@ public class Util {
 	
 	public static String getSharedPrefStr(Context ctx, String key) {
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(ctx);
-		return pref.getString(key, "");
+		return pref.getString(key, "-1");
 	}
 	
 	public static boolean putSharedPrefStr(Context ctx, String key, String value) {
@@ -40,16 +40,20 @@ public class Util {
 	}
 	
 	public static void setRentalRecordToSharedPref(Context ctx, RentalRecord rec) {
-		putSharedPrefStr(ctx, "rental_pickup_slot_id", rec.pickup_slot_id);
-		putSharedPrefStr(ctx, "rental_dropoff_slot_id", rec.dropoff_slot_id);
+		putSharedPrefStr(ctx, "rental_pickup_slot_id", ""+rec.pickup_slot_id);
+		putSharedPrefStr(ctx, "rental_dropoff_slot_id", ""+rec.dropoff_slot_id);
 		putSharedPrefStr(ctx, "rental_device_id", rec.device_id);
 	}
 	
 	public static RentalRecord getRentalRecordFromSharedPref(Context ctx) {
 		RentalRecord rec = new RentalRecord();
 		rec.setDeviceId(getSharedPrefStr(ctx, "rental_device_id"));
-		rec.setPickup_slot_id(getSharedPrefStr(ctx, "rental_pickup_slot_id"));
-		rec.setDropoff_slot_id(getSharedPrefStr(ctx, "rental_dropoff_slot_id"));
+		rec.setPickup_slot_id(Integer.parseInt(getSharedPrefStr(ctx, "rental_pickup_slot_id")));
+		rec.setDropoff_slot_id(Integer.parseInt(getSharedPrefStr(ctx, "rental_dropoff_slot_id")));
+		
+		// if rec is empty, return null object
+		if (rec.getDeviceId().equals("-1")) 
+			return null;
 		return rec;
 	}
 	

@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -50,7 +51,7 @@ public class HttpUtil {
 			result = gson.fromJson(result_json, HttpResult.class);
 			Log.d(TAG, "HTTP Post Result: "+resp_code+" Entity Result: " + result);
 		} catch ( Exception e ) {
-			Log.e(TAG, "Exception when posting data to HTTP", e);
+			Log.e(TAG, "Exception when posting pickupBike HTTP", e);
 		}
 		return (result != null ? result.getSuccess() : -1);
 		
@@ -75,7 +76,31 @@ public class HttpUtil {
 			result = gson.fromJson(result_json, HttpResult.class);
 			Log.d(TAG, "HTTP Post Result: "+resp_code+" Entity Result: " + result);
 		} catch ( Exception e ) {
-			Log.e(TAG, "Exception when posting data to HTTP", e);
+			Log.e(TAG, "Exception posting dropOffBike HTTP", e);
+		}
+		return (result != null ? result.getSuccess() : -1);
+	}
+	
+	public static int updateLocationTrack(Context ctx, RentalLocation rl) {
+		int resp_code = -1;
+		HttpResult result = null;
+		try {
+			
+			DefaultHttpClient c = new DefaultHttpClient(getTimeoutParams());
+			HttpPost req = new HttpPost(ctx.getText(R.string.tracking_url).toString());
+			req.setHeader("Content-Type", "application/json; charset=UTF-8");
+			Gson gson = new Gson();
+			String poststr = gson.toJson(rl);
+			StringEntity se = new StringEntity(poststr);
+			
+			req.setEntity(se);
+			HttpResponse resp = c.execute(req);
+			String result_json = convertStreamToString(resp.getEntity().getContent());
+			resp_code = resp.getStatusLine().getStatusCode();
+			result = gson.fromJson(result_json, HttpResult.class);
+			Log.d(TAG, "HTTP Post Result: "+resp_code+" Entity Result: " + result);
+		} catch ( Exception e ) {
+			Log.e(TAG, "Exception when posting updateLocationTrack HTTP", e);
 		}
 		return (result != null ? result.getSuccess() : -1);
 	}
