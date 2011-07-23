@@ -1,7 +1,10 @@
 package com.twt.xtreme;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -11,20 +14,37 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class TrackViewActivity extends Activity {
+public class AvailViewActivity extends Activity {
 
-	private static final String TAG = "TrackViewActivity";
+	private static final String T = "AvailViewActivity";
 	private SharedPreferences pref;
-	private String track_url;
+	private String view_url;
 	private WebView webview;
-	private String sample_url;
+	Location loc;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		sample_url = getText(R.string.tracking_view_url).toString() + "/47";
+		
+		
+		
+		LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		loc = ( locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) != null ?
+					locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) :
+						locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) );
+		if (loc != null) {
+			Log.d(T, loc.toString());
+			
+		} else {
+			Log.e(T, "Can't get any location");
+		}
+		
 		pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		track_url = getText(R.string.tracking_view_url).toString() + Util.getSharedPrefStr(getApplicationContext(), "rental_id");
+		view_url = getText(R.string.avail_view_url).toString() + 
+					"?latitude="+loc.getLatitude()+
+					"&longitude="+loc.getLongitude()+
+					"&accuracy="+loc.getAccuracy();
+		
 		webview = new WebView(this);
 		webview.setVerticalFadingEdgeEnabled(true);
 		webview.setVerticalScrollbarOverlay(true);
@@ -48,16 +68,16 @@ public class TrackViewActivity extends Activity {
 			}
 			
 		});
-		webview.loadUrl(track_url);
+		webview.loadUrl(view_url);
 	}
 
 
     @Override
 	public void onBackPressed() {
-    	if (webview.getUrl() != null && !webview.getUrl().equals(track_url)) {
-    		webview.loadUrl(track_url);
+    	if (webview.getUrl() != null && !webview.getUrl().equals(view_url)) {
+    		webview.loadUrl(view_url);
     	} else {
-    		Log.d(TAG, "at the report url, closing activity.");
+    		Log.d(T, "at the view url, closing activity.");
     		super.onBackPressed();
     	}
 	}
@@ -65,7 +85,7 @@ public class TrackViewActivity extends Activity {
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.report_menu, menu);
+        inflater.inflate(R.menu.view_menu, menu);
         return true;
     }
     
@@ -75,10 +95,6 @@ public class TrackViewActivity extends Activity {
         case R.id.menu_close:
         	this.finish();
         	return true;
-        	
-        case R.id.menu_report_list:
-        	webview.loadUrl(sample_url);
-        	break;
         }
 
         return false;

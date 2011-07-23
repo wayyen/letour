@@ -5,7 +5,8 @@
     <string name="app_name">LeTour Bike Rental App</string>
     <string name="rentbike_activity">Tap-and-Rent-a-Bike</string>
     <string name="postphoto_activity">Post Photo</string>
-    <string name="trackview_activity">My Routes</string>
+    <string name="trackview_activity">My Route</string>
+    <string name="availview_activity">Nearby Bikestops</string>
     <string name="camera_action">Take Picture</string>
     <string name="using_message">You are currently renting bike taken from </string>
     <string name="free_message">You are currently not renting.</string>
@@ -23,6 +24,7 @@
     <string name="dropoff_bike_url">http://117.120.6.188:8080/services/dropoff</string>
     <string name="tracking_url">http://117.120.6.188:8080/services/track</string>
     <string name="tracking_view_url">http://117.120.6.188:8080/routes/</string>
+    <string name="avail_view_url">http://117.120.6.188:8080/services/availability</string>
     <string name="couchdb_host">117.120.6.188</string>
     <string name="couchdb_port">5984</string>
     <string name="couchdb_db">codextreme</string>

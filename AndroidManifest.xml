@@ -33,6 +33,10 @@
                   android:theme="@android:style/Theme.Light"
                   android:label="@string/trackview_activity">
         </activity>
+        <activity android:name=".AvailViewActivity"
+                  android:theme="@android:style/Theme.Light"
+                  android:label="@string/availview_activity">
+        </activity>
         <service android:enabled="true" android:name=".TrackingService" />
 
     </application>

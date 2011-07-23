@@ -50,7 +50,7 @@ public class LeTourActivity extends Activity {
 		setContentView(R.layout.main);
 		bCamera = (Button) findViewById(R.id.btn_camera_action);
 		bNearby = (Button) findViewById(R.id.btn_find_nearby_bikes);
-		bNearby.setVisibility(View.GONE);
+
 		bTrack = (Button) findViewById(R.id.btn_track_map);
 		tStatus = (TextView) findViewById(R.id.text_status);
 		android_id = android.provider.Settings.Secure.getString(getContentResolver(), 
@@ -89,6 +89,11 @@ public class LeTourActivity extends Activity {
 
 	public void doTrackMapAction(View v) {
 		Intent trackIntent = new Intent (this, TrackViewActivity.class);
+		startActivity(trackIntent);
+	}	
+	
+	public void doFindNearby(View v) {
+		Intent trackIntent = new Intent (this, AvailViewActivity.class);
 		startActivity(trackIntent);
 	}
 	
