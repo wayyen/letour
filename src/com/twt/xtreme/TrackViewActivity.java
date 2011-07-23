@@ -22,7 +22,7 @@ public class TrackViewActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		sample_url = getText(R.string.tracking_view_url).toString() + "/47";
+		sample_url = getText(R.string.tracking_view_url).toString() + "/48";
 		pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		track_url = getText(R.string.tracking_view_url).toString() + Util.getSharedPrefStr(getApplicationContext(), "rental_id");
 		webview = new WebView(this);
