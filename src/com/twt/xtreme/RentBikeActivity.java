@@ -33,8 +33,7 @@ public class RentBikeActivity extends Activity {
 	String slot_id_json;
 	TagData tag;
 	
-	LocationManager locationManager;
-	LocationListener locationListener;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +73,6 @@ public class RentBikeActivity extends Activity {
 		}
 		Gson g = new Gson();
 		tag = g.fromJson(slot_id_json, TagData.class);
-		setupLocationManager();
 		tStatus.setText("You have just tapped slot ID: "+tag.slot_id );
 		
 	}
@@ -94,7 +92,7 @@ public class RentBikeActivity extends Activity {
 		if (result == HttpResult.STATUS_OK) {
 			Util.setRentalRecordToSharedPref(getApplicationContext(), rec);
 			tStatus.setText("Bike picked up successfully.");
-			startLocationTracking();
+			// start location tracking service
 			Log.d(T, "Bike picked up successfuly");
 		} else {
 			tStatus.setText("No bike available at slot:"+rec.getPickup_slot_id());
@@ -110,7 +108,7 @@ public class RentBikeActivity extends Activity {
 			if (result == HttpResult.STATUS_OK) {
 				Util.clearRentalRecordFromSharedPref(getApplicationContext());
 				tStatus.setText("Bike dropped off successfully.");
-				locationManager.removeUpdates(locationListener);
+				// stop location tracking service
 				Log.d(T, "Bike dropped off successfully");
 			} else {
 				tStatus.setText("Slot " + rec.getDropoff_slot_id()
@@ -152,69 +150,5 @@ public class RentBikeActivity extends Activity {
 	    return msgs;
 	}
 	
-	private void setupLocationManager() {
-		
-		// Acquire a reference to the system Location Manager
-		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
-		// Define a listener that responds to location updates
-		locationListener = new LocationListener() {
-		    @Override
-			public void onLocationChanged(Location location) {
-		      // Called when a new location is found by the network location provider.
-		      Log.d(T, "location update: " + location.toString());
-		      RentalRecord r = Util.getRentalRecordFromSharedPref(getApplicationContext());
-		      if (r != null ) {
-		    	  RentalLocation rl = new RentalLocation();
-		    	  rl.setDevice_id(r.getDeviceId());
-		    	  rl.setLatitude(location.getLatitude());
-		    	  rl.setLongitude(location.getLongitude());
-		    	  rl.setAccuracy(location.getAccuracy());
-		    	  HttpUtil.updateLocationTrack(getApplicationContext(), rl);
-		      }
-		    }
-
-		    @Override
-			public void onStatusChanged(String provider, int status, Bundle extras) {}
-
-		    @Override
-			public void onProviderEnabled(String provider) {}
-
-		    @Override
-			public void onProviderDisabled(String provider) {}
-		  };
-	}
-	
-	public void doLocationAction(View v) {
-
-		Location loc = ( locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) != null ?
-					locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) :
-						locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) );
-		if (loc != null) {
-			Log.d(T, loc.toString());
-			tStatus.setText(String.format("Lat: %f, Long: %f, Accuracy: %f",
-					loc.getLatitude(), loc.getLongitude(), loc.getAccuracy()));
-		} else {
-			Log.e(T, "Can't get any location");
-		}
-		Geocoder g = new Geocoder(this);
-		try {
-			List<Address> addrlist = g.getFromLocation(loc.getLatitude(),
-					loc.getLongitude(), 5);
-			for (Address addr : addrlist) {
-				Log.d(T, "addr: " + addr.toString());
-			}
-		} catch (Exception e) {
-			Log.e(T, "exception in geocoding", e);
-		}
-		
-	}
-	
-	private void startLocationTracking() {
-		// Register the listener with the Location Manager to receive location updates	
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, locationListener);
-		// Criteria c = new Criteria();
-		// locationManager.requestSingleUpdate(c, locationListener, null);
-	}
 		
 }
