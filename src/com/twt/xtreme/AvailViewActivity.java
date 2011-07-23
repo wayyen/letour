@@ -43,7 +43,7 @@ public class AvailViewActivity extends Activity {
 		view_url = getText(R.string.avail_view_url).toString() + 
 					"?latitude="+loc.getLatitude()+
 					"&longitude="+loc.getLongitude()+
-					"&accuracy="+loc.getAccuracy();
+					"&accuracy="+(loc.getAccuracy()+500f);
 		
 		webview = new WebView(this);
 		webview.setVerticalFadingEdgeEnabled(true);
